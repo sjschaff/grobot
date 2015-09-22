@@ -25,11 +25,13 @@ class Avg:
   def Ready(self):
     return (time.time() - self.time) >= 30
 
-def ToSqlNum(value):
-  if (math.isnan(value)):
-    return "NULL"
+def ToSqlNum(avg, key):
+  if key in avg.mp:
+    value = avg.mp[key]
+    if (not math.isnan(value)):
+      return str(value / avg.count)
 
-  return str(value)
+  return "NULL"
 
 def onErr(err):
   print(str(err))
@@ -82,15 +84,8 @@ class DbCom(ApplicationSession):
       def onDht(dht):
         return self.WriteSensor(dht, "dht", ["temp", "humidity", "index"])
 
-        #query = "INSERT INTO dht (dev, temp, humidity, index) VALUES (" + str(dht["device"]) + ", " + str(dht["temp"]) + ", " + str(dht["humidity"]) + ", " + str(dht["index"]) + ");";
-        #print(query)
-        #return self.pool.runOperation(query)
-
       def onWater(water):
         return self.WriteSensor(water, "water", ["value"])
-        #query = "INSERT INTO water (dev, value) VALUES (" + str(water["device"]) + ", " + str(water["value"]) + ");";
-        #print(query);
-        #return self.pool.runOperation(query)
 
       yield self.register(self)
       yield self.subscribe(onDht, u"bot.sensor.dht")

@@ -196,6 +196,16 @@ class ArduinoCom(ApplicationSession):
 
 
 
+sensors = []
+
+for i in range(0, 2):
+  sensors.append(
+    { "cmd": Cmd.ReadDHT, "reply": ReplyDHT, "channel": "bot.sensor.dht", "dev": i })
+
+for i in range(0, 3):
+  sensors.append(
+    { "cmd": Cmd.ReadWater, "reply": ReplyWater, "channel": "bot.sensor.water", "dev": i })
+
 
 class GroBot(ApplicationSession):
 
@@ -231,6 +241,16 @@ class GroBot(ApplicationSession):
       yield self.InternalError("Invalid Response From Cmd: " + str(reply))
 
   @inlineCallbacks
+  def InitSensors(self):
+    for sensor in sensors:
+      yield self.Publish(sensor["channel"], {"dev": sensor["dev"]})
+
+  @inlineCallbacks
+  def ReadSensors(self):
+    for sensor in sensors:
+        yield self.DoCmd(sensor["cmd"], sensor["reply"], sensor["channel"], None, sensor["dev"])
+
+  @inlineCallbacks
   def ReadDHT(self):
     for i in range(0, 2):
       yield self.DoCmd(Cmd.ReadDHT, ReplyDHT, u"bot.sensor.dht", None, i)
@@ -242,11 +262,13 @@ class GroBot(ApplicationSession):
 
   @inlineCallbacks
   def onJoin(self, details):
+    yield self.InitSensors()
     yield sleep(1)
 
     t = 0
     while True:
-      yield self.ReadDHT()
-      yield self.ReadWater()
+      yield self.ReadSensors()
+      #yield self.ReadDHT()
+      #yield self.ReadWater()
       yield sleep(3)
 
