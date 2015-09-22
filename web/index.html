@@ -1,0 +1,403 @@
+<html>
+  <head>
+    <script src=“js/jquery-2.1.4.js"></script>
+    <script src="http://code.highcharts.com/stock/highstock.js"></script>
+    <script src="theme.js"></script>
+    <script>AUTOBAHN_DEBUG = true;</script>
+    <script src="https://autobahn.s3.amazonaws.com/autobahnjs/latest/autobahn.js"></script>
+    <script src="grobot.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="stylesheet" type="text/css" href="css/weather-icons.min.css" />
+    <title>Simon's Grow Bot</title>
+    <style>
+
+      header.block {
+        background-image: url(“img/weed.jpg");
+        height: 400px;
+        background-size: 100%;
+        background-position: 0px -60px;
+      }
+
+      div.main-container {
+        margin-top: 25px;
+        margin-bottom: 25px;
+      }
+
+      .icon {
+        text-align: center;
+      }
+
+      .upton {
+        width: 140%;
+        margin-top: -30px;
+      }
+
+      .thermo:before {
+        content:"\0001F321";
+      }
+
+      .scnd-font-color {
+        size:
+      }
+
+      .wi {
+        line-height: 60px;
+      }
+
+      .menu-box-number {
+        top: 19px;
+      }
+
+      .color-num {
+        background:#50597b;
+        line-height: 22px;
+        border-radius: 15px;
+        text-align: center;
+        padding-left: 8px;
+        padding-right: 8px;
+        position: absolute;
+        top: 19px;
+        right: 19px;
+      }
+
+      .good, .menu-boxtab:hover .good {
+        background: #11a8ab
+      }
+
+      .bad {
+        background: #e64c65;
+      }
+
+      .moderate {
+        background: #fcb150;
+      }
+
+      .color-num {
+        transition: all .4s ease-in;
+      }
+
+      .menu-box .blue {
+        background: #3468af;
+      }
+
+      .water .icon {
+        color: #4fc4f6;
+      }
+
+      .menu-box.block {
+        height: auto;
+      }
+
+      .wide-container {
+        width: 100%;
+        float: left;
+      }
+
+      .status-title.titular {
+        background-color:#11a8ab;
+      }
+
+      .highcharts-container {
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+
+        width: 100% !important;
+      }
+
+      .info {
+        height: auto;
+      }
+
+      sup {
+        font-size: x-small;
+      }
+
+      .horizontal-list.feed {
+        border-bottom-width: 1px;
+        border-color: rgb(31, 37, 61);
+        border-bottom-style: solid;
+        display: inline-block;
+      }
+
+      .os-percentages {
+        padding: 0px;
+      }
+
+      .feed-cell, .os {
+        padding-top: 4px;
+        padding-bottom: 4px;
+        font-size: 12px;
+        margin-top: 4px;
+        margin-bottom: 4px;
+      }
+
+      .week-cell {
+        padding-top: 4px;
+        padding-bottom: 4px;
+        font-size: 12px;
+        text-align: left;
+        padding-left: 30px;
+        margin-top: 4px;
+        margin-bottom: 4px;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="main-container">
+      <header class="block">
+        <!-- h1>Simons GrowBot</h1 -->
+      </header>
+      <div class="left-container container">
+        <div class="menu-box block">
+          <h2 class="titular">Grow Left</h2>
+          <ul class="menu-box-menu">
+            <li>
+              <a class="menu-box-tab">
+                <span class="icon wi wi-thermometer scnd-font-color"></span>
+                Temperature
+                <div class="color-num bad" id="left-temp">?</div>
+              </a>
+            </li>
+
+            <li>
+              <a class="menu-box-tab">
+                <span class="icon wi wi-barometer scnd-font-color"></span>
+                Humidity
+                <div class="color-num bad" id="left-humidity">?</div>
+              </a>
+            </li>
+            <li>
+              <a class="menu-box-tab">
+                <span class="icon wi wi-hot scnd-font-color"></span>
+                Heat Index
+                <div class="color-num bad" id="left-hindex">?</div>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="middle-container container">
+        <div class="menu-box block water">
+          <h2 class="titular blue">Water Levels</h2>
+          <ul class="menu-box-menu">
+            <li>
+              <a class="menu-box-tab">
+                <span class="icon wi wi-raindrops scnd-font-color"></span>
+                Grow Bed A
+              <div class="color-num" id="water-la">?</div>
+              </a>
+            </li>
+
+            <li>
+              <a class="menu-box-tab">
+                <span class="icon wi wi-raindrops scnd-font-color"></span>
+                Grow Bed B
+              <div class="color-num" id="water-lb">?</div>
+              </a>
+            </li>
+
+            <li>
+              <a class="menu-box-tab">
+                <span class="icon wi wi-raindrops scnd-font-color"></span>
+                Flower Bed A
+              <div class="color-num" id="water-ra">?</div>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="right-container container">
+        <div class="menu-box block">
+          <h2 class="titular">Grow Right</h2>
+          <ul class="menu-box-menu">
+            <li>
+              <a class="menu-box-tab">
+                <span class="icon wi wi-thermometer scnd-font-color"></span>
+                Temperature
+                <div class="color-num bad" id="right-temp">?</div>
+              </a>
+            </li>
+
+            <li>
+              <a class="menu-box-tab">
+                <span class="icon wi wi-barometer scnd-font-color"></span>
+                Humidity
+                <div class="color-num bad" id="right-humidity">?</div>
+              </a>
+            </li>
+
+            <li>
+              <a class="menu-box-tab">
+                <span class="icon wi wi-hot scnd-font-color"></span>
+                Heat Index
+                <div class="color-num bad" id="right-hindex">?</div>
+              </a>
+            </li>
+
+          </ul>
+        </div>
+      </div>
+
+      <div class="wide-container block">
+        <h2 class="status-title titular">Climate</h2>
+        <div id="climatechart"></div>
+      </div>
+
+      <div class="wide-container block">
+        <h2 class="status-title titular">Feeding</h2>
+        <div id="feedingchart"></div>
+      </div>
+
+
+      <div class="left-container container">
+        <div class="info weather block clear">
+          <h2 class="titular">Info</h2>
+          <ul class="next-days">
+
+            <li>
+              <a>
+                <p class="next-days-date">
+                  <span class="day">Seedling</span>
+                  <span class="scnd-font-color">(1-2)</span>
+                </p>
+                <p class="next-days-temperature">0.8 - 1.3</p>
+              </a>
+            </li>
+
+            <li>
+              <a>
+                <p class="next-days-date">
+                  <span class="day">Clone</span>
+                  <span class="scnd-font-color">(1-2)</span>
+                </p>
+                <p class="next-days-temperature">0.5 - 1.3</p>
+              </a>
+            </li>
+
+            <li>
+              <a>
+                <p class="next-days-date">
+                  <span class="day">Vegetative</span>
+                  <span class="scnd-font-color">(3-5+)</span>
+                </p>
+                <p class="next-days-temperature">1.3 - 1.7</p>
+              </a>
+            </li>
+
+            <li>
+              <a>
+                <p class="next-days-date">
+                  <span class="day">Flowering</span>
+                  <span class="scnd-font-color">(5+)</span>
+                </p>
+                <p class="next-days-temperature">0.8 - 1.3</p>
+              </a>
+            </li>
+
+            <li>
+              <a>
+                <p class="next-days-date">
+                  <span class="day">PH: </span>
+                  <span class="scnd-font-color"></span>
+                </p>
+                <p class="next-days-temperature">5.5 - 6.5</p>
+              </a>
+            </li>
+
+          </ul>
+        </div>
+      </div>
+
+      <div class="middle-container container">
+        <div class="profile block"> <!-- PROFILE (MIDDLE-CONTAINER) -->
+          <a class="add-button" href="#28"><span class="icon entypo-plus scnd-font-color"></span></a>
+          <div class="profile-picture big-profile-picture clear">
+            <img class="upton" width="150px" alt="Kate Upton picture" src="http://bussoutgossip.files.wordpress.com/2013/02/kate-upton-sports-illustrated-2012-02142012-02-435x580.jpg" >
+          </div>
+          <h1 class="user-name">Kate Upton</h1>
+          <div class="profile-description">
+            <p class="scnd-font-color">Because she's really hot, and it was on the template.</p>
+          </div>
+          <ul class="profile-options horizontal-list">
+            <li><a class="comments" href="#40"><p><span class="icon fontawesome-comment-alt scnd-font-color"></span>23</p></a></li>
+            <li><a class="views" href="#41"><p><span class="icon fontawesome-eye-open scnd-font-color"></span>841</p></a></li>
+            <li><a class="likes" href="#42"><p><span class="icon fontawesome-heart-empty scnd-font-color"></span>49</p></a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="right-container container">
+        <div class="info weather block clear">
+          <h2 class="titular">Feeding Schedule</h2>
+
+          <ul class="os-percentages horizontal-list feed">
+            <li><p class="os scnd-font-color">Week</p></li>
+            <li><p class="os scnd-font-color">Gro</p></li>
+            <li><p class="os scnd-font-color">Micro</p></li>
+            <li><p class="os scnd-font-color">Bloom</p></li>
+          </ul>
+
+          <ul class="os-percentages horizontal-list feed">
+            <li><p class="week-cell">1<sup>&nbsp;</sup></p></li>
+            <li><p class="feed-cell">2.5<sup> ml</sup></p></li>
+            <li><p class="feed-cell">2.5<sup> ml</sup></p></li>
+            <li><p class="feed-cell">2.5<sup> ml</sup></p></li>
+          </ul>
+          <ul class="os-percentages horizontal-list feed">
+            <li><p class="week-cell">2*<sup>&nbsp;</sup></p></li>
+            <li><p class="feed-cell">10<sup> ml</sup></p></li>
+            <li><p class="feed-cell">7.5<sup> ml</sup></p></li>
+            <li><p class="feed-cell">2.5<sup> ml</sup></p></li>
+          </ul>
+          <ul class="os-percentages horizontal-list feed">
+            <li><p class="week-cell">3*<sup>&nbsp;</sup></p></li>
+            <li><p class="feed-cell">10<sup> ml</sup></p></li>
+            <li><p class="feed-cell">10<sup> ml</sup></p></li>
+            <li><p class="feed-cell">5<sup> ml</sup></p></li>
+          </ul>
+          <ul class="os-percentages horizontal-list feed">
+            <li><p class="week-cell">4<sup>&nbsp;</sup></p></li>
+            <li><p class="feed-cell">7.5<sup> ml</sup></p></li>
+            <li><p class="feed-cell">7.5<sup> ml</sup></p></li>
+            <li><p class="feed-cell">7.5<sup> ml</sup></p></li>
+          </ul>
+          <ul class="os-percentages horizontal-list feed">
+            <li><p class="week-cell">5/6*<sup>&nbsp;</sup></p></li>
+            <li><p class="feed-cell">2.5<sup> ml</sup></p></li>
+            <li><p class="feed-cell">7.5<sup> ml</sup></p></li>
+            <li><p class="feed-cell">10<sup> ml</sup></p></li>
+          </ul>
+          <ul class="os-percentages horizontal-list feed">
+            <li><p class="week-cell">7*/8<sup>&nbsp;</sup></p></li>
+            <li><p class="feed-cell">2.5<sup> ml</sup></p></li>
+            <li><p class="feed-cell">7.5<sup> ml</sup></p></li>
+            <li><p class="feed-cell">12.5<sup> ml</sup></p></li>
+          </ul>
+          <ul class="os-percentages horizontal-list feed">
+            <li><p class="week-cell">9/10<sup>&nbsp;</sup></p></li>
+            <li><p class="feed-cell">-<sup>&nbsp;</sup></p></li>
+            <li><p class="feed-cell">7.5<sup> ml</sup></p></li>
+            <li><p class="feed-cell">15<sup> ml</sup></p></li>
+          </ul>
+          <ul class="os-percentages horizontal-list feed">
+            <li><p class="week-cell">11<sup>&nbsp;</sup></p></li>
+            <li><p class="feed-cell">-<sup>&nbsp;</sup></p></li>
+            <li><p class="feed-cell">5<sup> ml</sup></p></li>
+            <li><p class="feed-cell">15<sup> ml</sup></p></li>
+          </ul>
+          <ul class="os-percentages horizontal-list feed">
+            <li style="border-bottom-left-radius: 5px;"><p class="week-cell">12<sup>&nbsp;</sup></p></li>
+            <li><p class="feed-cell">-<sup>&nbsp;</sup></p></li>
+            <li><p class="feed-cell">-<sup>&nbsp;</sup></p></li>
+            <li style="border-bottom-right-radius: 5px;"><p class="feed-cell">-<sup>&nbsp;</sup></p></li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </body>
+</html>
