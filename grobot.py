@@ -220,7 +220,7 @@ class GroBot(ApplicationSession):
       if (channel != None):
         if (reply.valid):
           yield self.Publish(channel, reply.json)
-        else
+        else:
           yield self.InternalError(channel.rpartition(u".")[2].capitalize() + u" " + str(dev) + u": Not Connected")
 
     elif isinstance(reply, ReplyError):
