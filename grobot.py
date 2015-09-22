@@ -204,6 +204,7 @@ class GroBot(ApplicationSession):
     return self.publish(channel, msg)
 
   def InternalError(self, msg):
+    print("[ALERT]: " + msg)
     return self.Publish(u'bot.alert', {
       "severity": "moderate",
       "message": msg,
