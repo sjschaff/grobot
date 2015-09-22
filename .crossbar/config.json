@@ -1,0 +1,89 @@
+
+{
+   "controller": {
+   },
+   "workers": [
+      {
+	       "id": "grobot",
+         "type": "router",
+         "options": {
+            "pythonpath": [".."]
+         },
+         "realms": [
+            {
+               "name": "grow",
+               "roles": [
+                  {
+                     "name": "anonymous",
+                     "permissions": [
+                        {
+                           "uri": "*",
+                           "publish": true,
+                           "subscribe": true,
+                           "call": true,
+                           "register": true
+                        }
+                     ]
+                  },
+                  {
+                     "name": "grobot",
+                     "permissions": [
+                        {
+                           "uri": "*",
+                           "publish": true,
+                           "subscribe": true,
+                           "call": true,
+                           "register": true
+                        }
+                     ]
+                  }
+               ]
+            }
+         ],
+         "transports": [
+            {
+               "type": "web",
+               "options": {
+                  "cache_timeout": 345600
+               },
+               "endpoint": {
+                  "type": "tcp",
+                  "port": 8080
+               },
+               "paths": {
+                  "/": {
+                     "type": "static",
+                     "directory": "../web"
+               },
+               "ws": {
+                  "type": "websocket"
+               }
+             }
+            }
+         ],
+         "components": [
+            {
+               "id": "db_com",
+               "type": "class",
+               "classname": "db.DbCom",
+               "realm": "grow",
+               "role": "grobot"
+            },
+            {
+               "id": "arduino_com",
+               "type": "class",
+               "classname": "grobot.ArduinoCom",
+               "realm": "grow",
+               "role": "grobot"
+            },
+            {
+               "id": "grobot",
+               "type": "class",
+               "classname": "grobot.GroBot",
+               "realm": "grow",
+               "role": "grobot"
+            }
+         ]
+      }
+   ]
+}
