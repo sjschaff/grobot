@@ -25,13 +25,17 @@ class Avg:
   def Ready(self):
     return (time.time() - self.time) >= 30
 
-def ToSqlNum(avg, key):
-  if key in avg.mp:
-    value = avg.mp[key]
-    if (not math.isnan(value)):
-      return str(value / avg.count)
+def ToSqlNum(value):
+  if (math.isnan(value)):
+    return "NULL"
 
-  return "NULL"
+  return str(value)
+
+def GetOrNull(mp, key):
+  if key in mp:
+    return mp[key]
+  else:
+    return float('nan')
 
 def onErr(err):
   print(str(err))
@@ -49,7 +53,7 @@ class DbCom(ApplicationSession):
   def WriteSensor(self, mp, table, columns):
     try:
       key = (table, mp["dev"]);
-      values = dict((k, mp[k]) for k in columns)
+      values = dict((k, GetOrNull(mp, k)) for k in columns)
 
       if key in self.averages:
         avg = self.averages[key]
