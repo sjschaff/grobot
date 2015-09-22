@@ -25,8 +25,9 @@ Highcharts.theme = {
   navigator: {
     xAxis: {
       dateTimeLabelFormats: {
-        second: "%I %P %m/%e",
-        minute: "%I %P %m/%e"
+        second: "%m/%e %I %P",
+        minute: "%m/%e %I %P",
+        hour: "%m/%e %I %P",
       }
     }
   },
@@ -50,8 +51,12 @@ Highcharts.theme = {
     tickWidth: 2,
     minorTickWidth: 1,
     dateTimeLabelFormats: {
-      second: "%I:%M&nbsp;%P&nbsp;%m/%e",
-      minute: "%I:%M&nbsp;%P&nbsp;%m/%e"
+        second: "%m/%e, %l:%M %P",
+        minute: "%m/%e, %l:%M %P",
+        hour: "%m/%e, %l %P",
+	day: "%a, %m/%e",
+	week: "Week of %b. %e",
+	month: "%B %Y"
     },
     minRange: 600000,
     minTickInterval: 300000,
@@ -91,9 +96,6 @@ Highcharts.theme = {
 		backgroundColor: '#707073',
     borderColor: '#707073',
     borderRadius: 5,
-    dateTimeLabelFormats: {
-      second: "%A, %b %e, %I:%M %P"
-    },
     valueDecimals: 2,
     useHTML: true,
     valueSuffix: "&deg;",
