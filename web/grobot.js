@@ -96,6 +96,7 @@ connection.onopen = function(session) {
     alrt = args[0]
 
     console.log("alert[" + alrt.severity + "]: " + alrt.message);
+  }
 
   function onSubError(error) {
     console.log("Subscription Error: " + error);
@@ -171,6 +172,7 @@ connection.onclose = function(reason, details) {
 };
 
 
-connection.open()
+connection.open();
+
 $(document).ready(function() {
 });
