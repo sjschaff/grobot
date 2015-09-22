@@ -81,10 +81,6 @@ connection.onopen = function(session) {
   function onDHT(args) {
     dht = args[0];
 
-    dht.temp = parseFloat(dht.temp);
-    dht.humidity = parseFloat(dht.humidity);
-    dht.index = parseFloat(dht.index);
-
     UpdateTemp(dht.location, dht.temp);
     UpdateHumidity(dht.location, dht.humidity);
     UpdateIndex(dht.location, dht.index);
@@ -95,6 +91,11 @@ connection.onopen = function(session) {
 
     $("#water-" + water.location).html(water.value.toFixed(2));
   }
+
+  function onAlert(args) {
+    alrt = args[0]
+
+    console.log("alert[" + alrt.severity + "]: " + alrt.message);
 
   function onSubError(error) {
     console.log("Subscription Error: " + error);
