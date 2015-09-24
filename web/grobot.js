@@ -164,7 +164,7 @@ connection.onopen = function(session) {
       lightChart.yAxis.max = 5;
       lightChart.yAxis.minorTickInterval = .5;
 
-      waterChart.series = [
+      lightChart.series = [
         MakeData('Light A', 0, '', light0.map(toWater), 'areaspline'),
         MakeData('Light B', 0, '', light1.map(toWater), 'areaspline'),
         MakeData('Light C', 0, '', light2.map(toWater), 'spline'),
