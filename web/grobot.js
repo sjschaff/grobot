@@ -115,6 +115,10 @@ connection.onopen = function(session) {
   session.call('bot.db.water', [1]).then(function(water1) {
   session.call('bot.db.water', [2]).then(function(water2) {
 
+  session.call('bot.db.light', [0]).then(function(light0) {
+  session.call('bot.db.light', [1]).then(function(light1) {
+  session.call('bot.db.light', [2]).then(function(light2) {
+
       function toTemp(val) {
         return [val[0] * 1000, val[1]]
       }
@@ -160,11 +164,20 @@ connection.onopen = function(session) {
       lightChart.yAxis.max = 5;
       lightChart.yAxis.minorTickInterval = .5;
 
+      waterChart.series = [
+        MakeData('Light A', 0, '', light0.map(toWater), 'areaspline'),
+        MakeData('Light B', 0, '', light1.map(toWater), 'areaspline'),
+        MakeData('Light C', 0, '', light2.map(toWater), 'spline'),
+      ]
+
       $('#climatechart').highcharts('StockChart', climateChart);
       $('#feedingchart').highcharts('StockChart', waterChart);
       $('#lightchart').highcharts('StockChart', lightChart);
 
       $(window).resize();
+  });
+  });
+  });
   });
   });
   });
