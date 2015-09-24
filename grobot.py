@@ -15,8 +15,6 @@ from autobahn.twisted.util import sleep
 from autobahn.twisted.wamp import ApplicationSession
 from autobahn.wamp.exception import ApplicationError
 
-PORT = "ACM1"
-
 def LocDHT(device):
   if (device == 0):
     return "left"
@@ -36,6 +34,9 @@ def LocWater(device):
   if (device == 2):
     return "ra"
 
+def LocLight(device):
+  return LocWater(device)
+
 class Cmd(Enum):
   Sync = 0
   Power = 1
@@ -43,6 +44,7 @@ class Cmd(Enum):
 
   ReadDHT = 128
   ReadWater = 129
+  ReadWater = 130
 
 class ReplySuccess:
   pass
@@ -73,6 +75,16 @@ class ReplyWater:
       "value": value
     }
 
+class ReplyLight:
+  def __init__(self, device, value):
+    self.device = device
+    self.value = value
+    self.json = {
+      "dev": device,
+      "location": LocLight(device),
+      "value": value
+    }
+
 class ReplyError:
   def __init__(self, log):
     self.log = log
@@ -89,6 +101,9 @@ def LengthReply(cmd):
     return 12
 
   elif (cmd is Cmd.ReadWater):
+    return 4
+
+  elif (cmd is Cmd.ReadLight):
     return 4
 
   return 0
@@ -113,6 +128,9 @@ def CreateReply(cmd, device, reply):
   elif (cmd is Cmd.ReadWater):
     return ReplyWater(device, ReadFloat(reply))
 
+  elif (cmd is Cmd.ReadLight):
+    return ReplyLight(device, ReadFloat(reply))
+
   assert len(reply) == 0
   return ReplySuccess()
 
@@ -124,9 +142,9 @@ class ArduinoCom(ApplicationSession):
 
   def SendCmd(self, cmd, dev, val):
     # Write
-    self.ser.flushOutput()
-    self.ser.flushInput()
-    #time.sleep(.1)
+    #self.ser.flushOutput()
+    #self.ser.flushInput()
+    time.sleep(.1)
 
     sent = [0xFF, 0xFF, cmd.value, dev, val]
     self.ser.write(''.join(map(chr, sent)))
@@ -141,8 +159,8 @@ class ArduinoCom(ApplicationSession):
     if (len(reply) < cbyte):
       return ReplyError("Reply Time Out [" + str(len(reply)) + "/" + str(cbyte) + "]")
 
-    #print("Sent: [" + ", ".join(map(str, sent)) + "]")
-    #print("Rec: [" + ", ".join(map(str, reply)) + "]")
+    print("Sent: [" + ", ".join(map(str, sent)) + "]")
+    print("Rec: [" + ", ".join(map(str, reply)) + "]")
 
     # parse response
     head = reply[-2:]
@@ -205,6 +223,10 @@ for i in range(0, 2):
 for i in range(0, 3):
   sensors.append(
     { "cmd": Cmd.ReadWater, "reply": ReplyWater, "channel": "bot.sensor.water", "dev": i })
+
+for i in range(0, 3):
+  sensors.append(
+    {"cmd": Cmd.ReadLight, "reply": ReplyLight, "channel": "bot.sensor.light", "dev": i })
 
 
 class GroBot(ApplicationSession):
