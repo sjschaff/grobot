@@ -44,7 +44,7 @@ class Cmd(Enum):
 
   ReadDHT = 128
   ReadWater = 129
-  ReadWater = 130
+  ReadLight = 130
 
 class ReplySuccess:
   pass
