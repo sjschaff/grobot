@@ -198,7 +198,7 @@ class ArduinoCom(ApplicationSession):
 
     ack = None
     trys = 0
-
+    time.sleep(.8);
     while isinstance(ack, ReplySuccess) == False:
       trys = trys + 1
       if trys > 150:
@@ -232,7 +232,7 @@ for i in range(0, 3):
 class GroBot(ApplicationSession):
 
   def Publish(self, channel, msg):
-    #print("(" + channel + "): " + str(msg))
+    print("(" + channel + "): " + str(msg))
     return self.publish(channel, msg)
 
   def InternalError(self, msg):
