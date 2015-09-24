@@ -117,7 +117,7 @@ class DbCom(ApplicationSession):
 
   @inlineCallbacks
   @wamp.register(u'bot.db.light')
-  def ReadWater(self, dev):
+  def ReadLight(self, dev):
     result = yield self.pool.runQuery("SELECT CAST(EXTRACT(EPOCH FROM time) as INTEGER), value FROM light WHERE dev = " + str(dev) + " ORDER BY TIME")
     returnValue(result)
 

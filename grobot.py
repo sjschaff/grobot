@@ -79,6 +79,7 @@ class ReplyLight:
   def __init__(self, device, value):
     self.device = device
     self.value = value
+    self.valid = not math.isnan(value)
     self.json = {
       "dev": device,
       "location": LocLight(device),
@@ -142,8 +143,8 @@ class ArduinoCom(ApplicationSession):
 
   def SendCmd(self, cmd, dev, val):
     # Write
-    #self.ser.flushOutput()
-    #self.ser.flushInput()
+    self.ser.flushOutput()
+    self.ser.flushInput()
     time.sleep(.1)
 
     sent = [0xFF, 0xFF, cmd.value, dev, val]
@@ -159,8 +160,8 @@ class ArduinoCom(ApplicationSession):
     if (len(reply) < cbyte):
       return ReplyError("Reply Time Out [" + str(len(reply)) + "/" + str(cbyte) + "]")
 
-    print("Sent: [" + ", ".join(map(str, sent)) + "]")
-    print("Rec: [" + ", ".join(map(str, reply)) + "]")
+    #print("Sent: [" + ", ".join(map(str, sent)) + "]")
+    #print("Rec: [" + ", ".join(map(str, reply)) + "]")
 
     # parse response
     head = reply[-2:]
