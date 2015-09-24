@@ -109,7 +109,7 @@
       }
 
       sup {
-        font-size: x-small;
+        font-size: xx-small;
       }
 
       .horizontal-list.feed {
@@ -118,32 +118,38 @@
         border-bottom-style: solid;
         display: inline-block;
       }
+	.small-label {
+		font-size: small;
+	}
 
-      .os-percentages {
-        padding: 0px;
-      }
+	.feeding-chart {
+		width:100%;
+		background-color: rgb(80, 89, 123);
+		border-collapse: collapse;
+		text-align: center;
+		font-size: 12px;
+		border-bottom-left-radius: 5px;
+		border-bottom-right-radius: 5px;
+	}
 
-      .feed-cell, .os {
-        padding-top: 4px;
-        padding-bottom: 4px;
-        font-size: 12px;
-        margin-top: 4px;
-        margin-bottom: 4px;
-      }
+	.feeding-chart td {
+		border-style: solid;
+		border-top-width: 1px;
+		border-right-width: 0px;
+		border-left-width: 0px;
+		border-bottom-width: 0px;
+		border-color: #394264;
+		padding-top: 8px;
+		padding-bottom: 8px;
+		color: white;
+	}
 
-      .week-cell {
-        padding-top: 4px;
-        padding-bottom: 4px;
-        font-size: 12px;
-        text-align: left;
-        padding-left: 30px;
-        margin-top: 4px;
-        margin-bottom: 4px;
-      }
-
-      .small-label {
-        font-size: small;
-      }
+	.feeding-chart tr:first-child td { color: rgb(144, 153, 183); }
+	.feeding-chart td:nth-child(2) { color: rgb(144, 153, 183); }
+	.feeding-chart td + td {
+		border-left-width:1px;
+		width: 50px;
+	}
 
     </style>
   </head>
@@ -261,7 +267,6 @@
         <div class="info weather block clear">
           <h2 class="titular">Info</h2>
           <ul class="next-days">
-
             <li>
               <a>
                 <p class="next-days-date">
@@ -312,6 +317,16 @@
               </a>
             </li>
 
+            <li>
+              <a>
+                <p class="next-days-date">
+                  <span class="day">Res. Temp.</span>
+                  <span class="scnd-font-color"></span>
+                </p>
+                <p class="next-days-temperature">&lt; 75 <span class="scnd-font-color small-label">&deg;F</span></p>
+              </a>
+            </li>
+
           </ul>
         </div>
       </div>
@@ -337,68 +352,79 @@
       <div class="right-container container">
         <div class="info weather block clear">
           <h2 class="titular">Feeding Schedule (ml/gal)</h2>
+<table class="feeding-chart">
+	<tr>
+		<td>Stage</td>
+		<td>Week</td>
+		<td>Gro</td>
+		<td>Micro</td>
+		<td>Bloom</td>
+	</tr>
+	<tr>
+		<td>Seedling</td>
+		<td>1</td>
+		<td>2.5<sup> ml</sup></td>
+		<td>2.5<sup> ml</sup></td>
+		<td>2.5<sup> ml</sup></td>
+	</tr>
+	<tr>
+		<td>Early Growth</td>
+		<td>2*</td>
+		<td>10<sup> ml</sup></td>
+		<td>7.5<sup> ml</sup></td>
+		<td>2.5<sup> ml</sup></td>
+	</tr>
+	<tr>
+		<td>Late Growth</td>
+		<td>3*</td>
+		<td>10<sup> ml</sup></td>
+		<td>10<sup> ml</sup></td>
+		<td>5<sup> ml</sup></td>
+	</tr>
+	<tr>
+		<td>Transition</td>
+		<td>4</td>
+		<td>7.5<sup> ml</sup></td>
+		<td>7.5<sup> ml</sup></td>
+		<td>7.5<sup> ml</sup></td>
+	</tr>
+	<tr>
+		<td>Early Bloom</td>
+		<td>5-6*</td>
+		<td>2.5<sup> ml</sup></td>
+		<td>7.5<sup> ml</sup></td>
+		<td>10<sup> ml</sup></td>
+	</tr>
+	<tr>
+		<td>Mid Bloom</td>
+		<td>7-8</td>
+		<td>2.5<sup> ml</sup></td>
+		<td>7.5<sup> ml</sup></td>
+		<td>12.5<sup> ml</sup></td>
+	</tr>
+	<tr>
+		<td>Late Bloom</td>
+		<td>9-10</td>
+		<td>-</td>
+		<td>7.5<sup> ml</sup></td>
+		<td>15<sup> ml</sup></td>
+	</tr>
+	<tr>
+		<td>Ripen</td>
+		<td>11</td>
+		<td>-</td>
+		<td>5<sup> ml</sup></td>
+		<td>15<sup> ml</sup></td>
+	</tr>
+	<tr>
+		<td>Flush</td>
+		<td>12</td>
+		<td>-</td>
+		<td>-</td>
+		<td>-</td>
+	</tr>
+</table>
 
-          <ul class="os-percentages horizontal-list feed">
-            <li><p class="os scnd-font-color">Week</p></li>
-            <li><p class="os scnd-font-color">Gro</p></li>
-            <li><p class="os scnd-font-color">Micro</p></li>
-            <li><p class="os scnd-font-color">Bloom</p></li>
-          </ul>
-
-          <ul class="os-percentages horizontal-list feed">
-            <li><p class="week-cell">1<sup>&nbsp;</sup></p></li>
-            <li><p class="feed-cell">2.5<sup> ml</sup></p></li>
-            <li><p class="feed-cell">2.5<sup> ml</sup></p></li>
-            <li><p class="feed-cell">2.5<sup> ml</sup></p></li>
-          </ul>
-          <ul class="os-percentages horizontal-list feed">
-            <li><p class="week-cell">2*<sup>&nbsp;</sup></p></li>
-            <li><p class="feed-cell">10<sup> ml</sup></p></li>
-            <li><p class="feed-cell">7.5<sup> ml</sup></p></li>
-            <li><p class="feed-cell">2.5<sup> ml</sup></p></li>
-          </ul>
-          <ul class="os-percentages horizontal-list feed">
-            <li><p class="week-cell">3*<sup>&nbsp;</sup></p></li>
-            <li><p class="feed-cell">10<sup> ml</sup></p></li>
-            <li><p class="feed-cell">10<sup> ml</sup></p></li>
-            <li><p class="feed-cell">5<sup> ml</sup></p></li>
-          </ul>
-          <ul class="os-percentages horizontal-list feed">
-            <li><p class="week-cell">4<sup>&nbsp;</sup></p></li>
-            <li><p class="feed-cell">7.5<sup> ml</sup></p></li>
-            <li><p class="feed-cell">7.5<sup> ml</sup></p></li>
-            <li><p class="feed-cell">7.5<sup> ml</sup></p></li>
-          </ul>
-          <ul class="os-percentages horizontal-list feed">
-            <li><p class="week-cell">5/6*<sup>&nbsp;</sup></p></li>
-            <li><p class="feed-cell">2.5<sup> ml</sup></p></li>
-            <li><p class="feed-cell">7.5<sup> ml</sup></p></li>
-            <li><p class="feed-cell">10<sup> ml</sup></p></li>
-          </ul>
-          <ul class="os-percentages horizontal-list feed">
-            <li><p class="week-cell">7*/8<sup>&nbsp;</sup></p></li>
-            <li><p class="feed-cell">2.5<sup> ml</sup></p></li>
-            <li><p class="feed-cell">7.5<sup> ml</sup></p></li>
-            <li><p class="feed-cell">12.5<sup> ml</sup></p></li>
-          </ul>
-          <ul class="os-percentages horizontal-list feed">
-            <li><p class="week-cell">9/10<sup>&nbsp;</sup></p></li>
-            <li><p class="feed-cell">-<sup>&nbsp;</sup></p></li>
-            <li><p class="feed-cell">7.5<sup> ml</sup></p></li>
-            <li><p class="feed-cell">15<sup> ml</sup></p></li>
-          </ul>
-          <ul class="os-percentages horizontal-list feed">
-            <li><p class="week-cell">11<sup>&nbsp;</sup></p></li>
-            <li><p class="feed-cell">-<sup>&nbsp;</sup></p></li>
-            <li><p class="feed-cell">5<sup> ml</sup></p></li>
-            <li><p class="feed-cell">15<sup> ml</sup></p></li>
-          </ul>
-          <ul class="os-percentages horizontal-list feed">
-            <li style="border-bottom-left-radius: 5px;"><p class="week-cell">12<sup>&nbsp;</sup></p></li>
-            <li><p class="feed-cell">-<sup>&nbsp;</sup></p></li>
-            <li><p class="feed-cell">-<sup>&nbsp;</sup></p></li>
-            <li style="border-bottom-right-radius: 5px;"><p class="feed-cell">-<sup>&nbsp;</sup></p></li>
-          </ul>
         </div>
       </div>
 
