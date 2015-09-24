@@ -154,8 +154,15 @@ connection.onopen = function(session) {
         MakeData('Water C', 0, '', water2.map(toWater), 'spline'),
       ]
 
+      lightChart = MakeChart();
+      lightChart.yAxis = MakeAxis("{value.2f}", false);
+      lightChart.yAxis.min = 0;
+      lightChart.yAxis.max = 5;
+      lightChart.yAxis.minorTickInterval = .5;
+
       $('#climatechart').highcharts('StockChart', climateChart);
       $('#feedingchart').highcharts('StockChart', waterChart);
+      $('#lightchart').highcharts('StockChart', lightChart);
 
       $(window).resize();
   });
