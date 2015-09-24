@@ -91,9 +91,13 @@ class DbCom(ApplicationSession):
       def onWater(water):
         return self.WriteSensor(water, "water", ["value"])
 
+      def onLight(light):
+        return self.WriteSensor(light, "light", ["value"])
+
       yield self.register(self)
       yield self.subscribe(onDht, u"bot.sensor.dht")
       yield self.subscribe(onWater, u"bot.sensor.water")
+      yield self.subscribe(onLight, u"bot.sensor.light")
       print("DB Com Connected.")
 
     except Exception as e:
@@ -109,6 +113,12 @@ class DbCom(ApplicationSession):
   @wamp.register(u'bot.db.water')
   def ReadWater(self, dev):
     result = yield self.pool.runQuery("SELECT CAST(EXTRACT(EPOCH FROM time) as INTEGER), value FROM water WHERE dev = " + str(dev) + " ORDER BY TIME")
+    returnValue(result)
+
+  @inlineCallbacks
+  @wamp.register(u'bot.db.light')
+  def ReadWater(self, dev):
+    result = yield self.pool.runQuery("SELECT CAST(EXTRACT(EPOCH FROM time) as INTEGER), value FROM light WHERE dev = " + str(dev) + " ORDER BY TIME")
     returnValue(result)
 
 
