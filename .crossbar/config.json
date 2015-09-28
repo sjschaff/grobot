@@ -43,9 +43,6 @@
          "transports": [
             {
                "type": "web",
-               "options": {
-                  "cache_timeout": 345600
-               },
                "endpoint": {
                   "type": "tcp",
                   "port": 8080
@@ -53,12 +50,22 @@
                "paths": {
                   "/": {
                      "type": "static",
-                     "directory": "../web"
-               },
-               "ws": {
-                  "type": "websocket"
+                     "directory": "../web",
+                     "options": {
+                        "cache_timeout": 345600
+                     }
+                  },
+                  "cam": {
+                     "type": "static",
+                     "directory": "../cam",
+                     "options": {
+                        "cache_timeout": 0
+                     }
+                  },
+                  "ws": {
+                    "type": "websocket"
+                  }
                }
-             }
             }
          ],
          "components": [

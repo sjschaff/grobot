@@ -187,15 +187,22 @@ class ArduinoCom(ApplicationSession):
     return self.SendCmd(cmd, dev, val)
 
   def TryConnect(self, name):
-    self.ser = serial.Serial("/dev/tty" + name, 57600, timeout=.1)
-    print("Connected To Arduino On " + name)
+    try:
+      self.ser = serial.Serial("/dev/tty" + name, 57600, timeout=.1)
+      print("Connected To Arduino On " + name)
+      return True
+    except Exception as e:
+      print("Unable to Connect to " + name + ": " + str(e))
+      return False
 
   @inlineCallbacks
   def onJoin(self, details):
-    try:
-      self.TryConnect("ACM0")
-    except:
-      self.TryConnect("ACM1")
+    connected = self.TryConnect("ACM0")
+    if not connected:
+      connected = self.TryConnect("ACM1")
+
+    if not connected:
+      raise Exception("Unable To Connect To Arduino")
 
     ack = None
     trys = 0
