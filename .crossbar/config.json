@@ -84,6 +84,13 @@
                "role": "grobot"
             },
             {
+               "id": "cam_com",
+               "type": "class",
+               "classname": "grobot.CamCom",
+               "realm": "grow",
+               "role": "grobot"
+            },
+            {
                "id": "grobot",
                "type": "class",
                "classname": "grobot.GroBot",
