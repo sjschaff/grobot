@@ -7,6 +7,7 @@
 	       "id": "grobot",
          "type": "router",
          "options": {
+            "title": "crossbar-grobot",
             "pythonpath": [".."]
          },
          "realms": [
@@ -86,7 +87,7 @@
             {
                "id": "cam_com",
                "type": "class",
-               "classname": "grobot.CamCom",
+               "classname": "cam.CamCom",
                "realm": "grow",
                "role": "grobot"
             },
