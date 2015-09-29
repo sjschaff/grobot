@@ -21,11 +21,12 @@ class CamCom(ApplicationSession):
     cam.awb_mode = "fluorescent"
     cam.exposure_mode = "sports"
     cam.exposure_compensation = 6
-    cam.resolution = (1296, 730)
+    cam.resolution = (950, 535) #(1296, 730)
+    cam.rotation = 270
     yield sleep(2)
 
     while (True):
-      cam.capture("cam/cam.png")
+      cam.capture("../cam/cam.png")
       yield sleep(60)
 
 
