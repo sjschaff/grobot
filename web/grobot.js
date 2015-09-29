@@ -9,7 +9,6 @@ Highcharts.setOptions({
 var connection = new autobahn.Connection({
    url: 'ws://' + document.location.host + '/ws',
    realm: 'grow',
-   debug: true
 });
 
 SetSeverity = function(e, sev) {
@@ -191,8 +190,23 @@ connection.onclose = function(reason, details) {
   console.log(details);
 };
 
-
 connection.open();
 
+reloc = function(e) {
+  content = $('#content').children();
+  content.removeClass('fadeInLeft');
+  content.addClass('animated fadeOutRight');
+  $('#' + e.data + '_').show().removeClass('fadeOutRight').addClass('animated fadeInLeft');
+};
+
 $(document).ready(function() {
+  loc = location.hash;
+  if (loc == '')
+    loc = '#status'
+  $(loc + '_').show();
+
+  $('#astatus').click('status', reloc);
+  $('#acharts').click('charts', reloc);
+  $('#ainfo').click('info', reloc);
+  $('#awebcam').click('webcam', reloc);
 });
